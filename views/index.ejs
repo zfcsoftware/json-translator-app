@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Json Translator App</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" href="../template/home.css">
+</head>
+
+<body>
+
+  <div id="menu">
+    <div class="menu-item active" data-config="home">
+      Home
+    </div>
+    <div class="menu-item " data-config="settings">
+      Settings
+    </div>
+    <div class="menu-item " data-config="history">
+      History
+    </div>
+    <div class="menu-item " data-config="app-about">
+      About the App
+    </div>
+
+  </div>
+
+
+  <div id="root">
+
+    <div class="root-item none" data-src="home">
+
+      <div class="translate-left-root">
+        <div class="upload-container">
+
+          <input id="file-upload" type="file" name="fileUpload" multiple="">
+          <label for="file-upload" id="file-drag">
+            Drag your JSON file here or click to select its location<br>(You can only translate 1 JSON file at a time)
+          </label>
+
+        </div>
+
+        <div class="order_name">
+          <input type="text" placeholder="Order Name" class="oname">
+        </div>
+
+      </div>
+      <div class="translate-right-root">
+
+        <div class="top-menu">
+          <div class="top-menu-item">
+            <div class="z_title">Translation Tool</div>
+            <select class="z_select modell">
+              <option value="gpt-3.5-turbo-16k-0613">gpt-3.5-turbo-16k-0613</option>
+              <option value="gpt-4">gpt-4</option>
+            </select>
+          </div>
+          <div class="top-menu-item">
+            <div class="z_title"><span class="counter">0</span> items to be translated</div>
+            <button class="start_btn">Start</button>
+          </div>
+        </div>
+
+
+        <div class="language-menu">
+
+
+
+          <div style="clear: both;"></div>
+        </div>
+
+
+
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+
+    <div class="root-item settings-data none" data-src="settings">
+
+
+      <div class="settings-item fl ">
+        <div>How many items should be translated instantly?</div>
+        <div class="order_name">
+          <input type="number" placeholder="3" class="zfc_vv" value="3">
+        </div>
+
+      </div>
+      <div class="settings-item fl ">
+        <div>Delete All</div>
+        <div class="bgroup">
+          <button class="remove_all_btn mb ram_btn_db">Delete All Orders</button>
+          <button class="remove_all_btn ram_btn_log">Delete All Saved Translation Data</button>
+        </div>
+      </div>
+      <div class="settings-item ">
+        <div>API Keys</div>
+        <textarea class="api_key" cols="30" rows="10" placeholder="sk-......."></textarea>
+      </div>
+      <div class="settings-item ">
+        <div>Prompt</div>
+        <textarea class="prompt_zfc" cols="30" rows="10"
+          placeholder="sk-.......">You should act as a grammar expert. You have to translate the text I will give you into the language I will give you without distorting its meaning and context. While translating, you must ensure that the meaning of the text is not distorted and that the translated language is translated into the translated language with exactly the same meaning. When you do the translation, you must create a json. The status variable must be true if the translation is successful. You should give the translation in string format in the data variable. When translating, you should use the variables in the text as they are. Language to translate: {{language}}, text to translate: "{{text}}"</textarea>
+      </div>
+
+
+
+    </div>
+
+    <div class="root-item z_dataset none" data-src="history">
+
+
+    </div>
+
+    <div class="root-item none" data-src="app-about">
+      <div class="pp mb">
+        <img src="https://avatars.githubusercontent.com/u/123484092?v=4" width="100">
+      </div>
+      <br><br>
+      <p class="mt">This application is open source developed by @zfcsoftware to contribute to the node.js community.
+        Commercial distribution and copying of the application is prohibited. If you want to use the app in a project,
+        please leave a note in your readme file.
+      </p>
+      <br><br>
+      <p> If you want to contribute to the development of the app, please star the github repo. This will give me
+        motivation and allow me to improve the app. Thank you!</p>
+      <br><br>
+
+      <iframe
+        src="https://ghbtns.com/github-btn.html?user=zfcsoftware&repo=json-translator-app&type=star&count=true&size=large"
+        frameborder="0" scrolling="0" width="170" height="30" title="GitHub">
+      </iframe>
+    </div>
+
+  </div>
+
+
+
+  <div style="clear: both;"></div>
+
+
+
+  <script>
+
+    window.api.receive("fromMain", (data) => {
+      console.log(`Received ${data} from main process`);
+    });
+    window.api.receive("notification", (data) => {
+      Toastify({
+        text: data,
+        duration: 3000,
+        newWindow: true,
+        close: false,
+        gravity: "top",
+        position: "center",
+        stopOnFocus: true,
+        style: {
+          background: "#000",
+          color: '#fff',
+          boxShadow: "0 0 10px #999",
+        },
+      }).showToast();
+    });
+    var languages = [
+      { "value": "us", "label": "English", checked: true },
+      { "value": "tr", "label": "Turkish", checked: true },
+      { "value": "fr", "label": "French", checked: true },
+      { "value": "es", "label": "Spanish", checked: true },
+      { "value": "de", "label": "German", checked: true },
+      { "value": "it", "label": "Italian", checked: true },
+      { "label": "Czech", "value": "cz", checked: true },
+      { "value": "pt", "label": "Portuguese", checked: true },
+      { "value": "nl", "label": "Dutch", checked: true },
+      { "value": "ru", "label": "Russian", checked: true },
+      { "label": "Greek", "value": "gr", checked: true },
+      { "value": "kr", "label": "Korean", checked: true },
+      { "value": "ar", "label": "Arabic", checked: true },
+      { "value": "cn", "label": "Chinese", checked: true },
+      { "value": "jp", "label": "Japanese", checked: true },
+      { "value": "pl", "label": "Polish", checked: true },
+      { "label": "Danish", "value": "dk", checked: true },
+      { "value": "id", "label": "Indonesian" },
+      { "value": "th", "label": "Thai" },
+      { "value": "vi", "label": "Vietnamese" },
+      { "value": "in", "label": "Hindi" },
+      { "value": "bn", "label": "Bengali" },
+      { "value": "gu", "label": "Gujarati" },
+      { "value": "kn", "label": "Kannada" },
+      { "value": "ml", "label": "Malayalam" },
+      { "value": "mr", "label": "Marathi" },
+      { "value": "pa", "label": "Punjabi" },
+      { "value": "in", "label": "Telugu" },
+      { "label": "Swedish", "value": "sv" },
+      { "label": "Norwegian", "value": "no" },
+      { "label": "Finnish", "value": "fi" },
+      { "label": "Hungarian", "value": "hu" },
+      { "label": "Urdu", "value": "pk" },
+      { "label": "Nepali", "value": "ne" },
+      { "label": "Persian", "value": "ir" }
+    ]
+    document.querySelector('.language-menu').innerHTML = languages.map(el => {
+      return `<div class="language-item ${el.checked ? "selected" : ""}" data-lang="${el.label}" data-lang2="${el.value}">
+            <img src="../template/flags/${el.value}.png" width="25" alt="">
+            <span>${el.label}</span>
+          </div>`
+    }).join('')
+
+
+
+    function tkdownload(a1, a2) {
+      console.log(a1, a2);
+      window.api.send("download", {
+        path: a2,
+        data: a1
+      });
+    }
+
+
+    // window.api.send("toMain", "some data");
+  </script>
+  <!-- <div class="menu-item">
+    <iframe
+      src="https://ghbtns.com/github-btn.html?user=zfcsoftware&repo=puppeteer-real-browser&type=star&count=true&size=large"
+      frameborder="0" scrolling="0" width="170" height="30" title="GitHub">
+    </iframe>
+  </div> -->
+
+</body>
+
+</html>
